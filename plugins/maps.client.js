@@ -24,7 +24,7 @@ export default function(context, inject){
     if(!isLoaded){
       waiting.push({
         fn: showMap,
-        arguments,
+        arguments: [canvas, lat, lng],
       })
       return
     }
@@ -41,9 +41,23 @@ export default function(context, inject){
     marker.setMap(map)
   }
 
+  const  makeAutoComplete = (input) => {
+    if(!isLoaded){
+      waiting.push({ fn: makeAutoComplete, arguments: [input] })
+      return
+    }
+
+    const autoComplete = new window.google.maps.places.Autocomplete(input, { types: ['(cities)']})
+    autoComplete.addListener('place_changed', () => {
+      const place = autoComplete.getPlace()
+      input.dispatchEvent(new CustomEvent('changed', { detail: place }))
+    })
+  }
+
   addScript()
 
   inject('maps', {
-    showMap
+    showMap,
+    makeAutoComplete,
   })
 }
