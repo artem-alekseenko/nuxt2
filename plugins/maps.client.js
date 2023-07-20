@@ -24,7 +24,7 @@ export default function(context, inject){
     if(!isLoaded){
       waiting.push({
         fn: showMap,
-        arguments: [canvas, lat, lng],
+        arguments: [canvas, lat, lng, markers],
       })
       return
     }
@@ -34,12 +34,20 @@ export default function(context, inject){
       center: new window.google.maps.LatLng(lat, lng),
       disableDefaultUI: true,
       zoomControl: true,
+      styles:[{
+        featureType: 'poi.business',
+        elementType: 'labels.icon',
+        stylers:[{ visibility: 'off' }]
+      }]
     }
     const map = new window.google.maps.Map(canvas, mapOptions)
 
     if(!markers){
       const position = new window.google.maps.LatLng(lat, lng)
-      const marker = new window.google.maps.Marker({ position })
+      const marker = new window.google.maps.Marker({
+        position,
+        clickable: false,
+      })
       marker.setMap(map)
       return
     }
@@ -47,7 +55,15 @@ export default function(context, inject){
     const bounds = new window.google.maps.LatLngBounds()
     markers.forEach((home) => {
       const position = new window.google.maps.LatLng(home.lat, home.lng)
-      const marker = new window.google.maps.Marker({ position })
+      const marker = new window.google.maps.Marker({
+        position,
+        label: {
+          text: `$${home.pricePerNight}`,
+          className: `marker home-${home.id}`,
+        },
+        icon: 'https://maps.gstatic.com/mapfiles/transparent.png',
+        clickable: false,
+      })
       marker.setMap(map)
       bounds.extend(position)
     })
