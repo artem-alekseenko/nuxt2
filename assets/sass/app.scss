@@ -266,6 +266,7 @@ $cities: paris, new-york, london, dubai, san-francisco, cancun;
   }
 
   &-masonry {
+    height: 40vh;
     @apply grid grid-cols-4 grid-rows-2 gap-6 mb-18;
 
     > div {
