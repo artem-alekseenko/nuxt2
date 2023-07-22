@@ -8,5 +8,8 @@
     "build": "nuxt build",
     "start": "nuxt start"
   },
-  "packageManager": "yarn@3.6.1"
+  "packageManager": "yarn@3.6.1",
+  "devDependencies": {
+    "@nuxtjs/tailwindcss": "4.2.1"
+  }
 }
