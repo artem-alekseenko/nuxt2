@@ -15,7 +15,11 @@ export default {
   router: {
     prefetchLinks: false,
   },
-  plugins:[ '~/plugins/maps.client', '~/plugins/dataApi' ],
+  plugins:[
+    '~/plugins/maps.client',
+    '~/plugins/dataApi',
+    '~/plugins/auth.client',
+  ],
   buildModules: ['@nuxtjs/tailwindcss'],
   css: ['~/assets/sass/app.scss'],
   build: {
@@ -23,5 +27,11 @@ export default {
     loaders: {
       limit: 0,
     }
+  },
+  publicRuntimeConfig: {
+    auth:{
+      cookieName: 'idToken',
+      clientId: '909807157313-i081vvnve3tucclov9ekjnnc11nh2ht4.apps.googleusercontent.com',
+    },
   },
 }
