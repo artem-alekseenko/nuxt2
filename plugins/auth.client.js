@@ -1,6 +1,6 @@
 import Cookie from 'js-cookie'
 
-export default ({ $config }) => {
+export default ({ $config, store }) => {
   const decodeJwtResponse = (token) => {
     const base64Url = token.split('.')[1];
     const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
@@ -12,7 +12,13 @@ export default ({ $config }) => {
   }
   const handleCredentialResponse = (response) => {
     const responsePayload = decodeJwtResponse(response.credential);
+
     Cookie.set($config.auth.cookieName, response.credential, { expires: 1/24, sameSite: 'Lax'})
+
+    store.commit('auth/user', {
+      fullName: responsePayload.name,
+      profileUrl: responsePayload.picture,
+    })
   }
 
   const init = () => {
